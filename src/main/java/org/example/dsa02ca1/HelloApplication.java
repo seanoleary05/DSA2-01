@@ -42,7 +42,6 @@ public class HelloApplication extends Application {
 
         button = new Button("Run Function");
         choiceBox.getItems().add("Open An Image");
-        choiceBox.getItems().add("Open Image As Greyscale");
         choiceBox.getItems().add("Test");
         choiceBox.getItems().add("Open Image Details");
         choiceBox.setValue("Dropdown: Choose a function");
@@ -66,7 +65,6 @@ public class HelloApplication extends Application {
 
     private void executeOption(String option) {
         HBox pictureRoot = new HBox();
-        HBox multiRoot = new HBox();
         Text t = new Text("");
         Button triC = new Button("Convert to Tricolor");
 
@@ -96,63 +94,16 @@ public class HelloApplication extends Application {
 
                 }
 
-            case "Open Image As Greyscale":
-                Label label = new Label();
-                FileChooser fileChooser2 = new FileChooser();
-                fileChooser2.setTitle("Open File");
-                fileChooser2.setInitialDirectory(new File("C:/"));
-                File file2 = fileChooser2.showOpenDialog(new Stage());
-
-                if (file2 != null) {
-                    label.setText(file2.getName());
-                    t.setText("Image Info: " + file2.getPath());
-                    try {
-                        Image image2 = new Image(file2.toURI().toString()); // Use toURI().toString() for better compatibility
-                        int width = (int) image2.getWidth();
-                        int height = (int) image2.getHeight();
-
-                        WritableImage wImage1 = new WritableImage(width, height);
-                        PixelReader pr = image2.getPixelReader();
-                        PixelWriter pw = wImage1.getPixelWriter();
-
-                        for (int y = 0; y < height; y++) {
-                            for (int x = 0; x < width; x++) {
-                                Color c = pr.getColor(x, y);
-                                double r = c.getRed();
-                                //System.out.println("red value = " + r);
-                                double g = c.getGreen();
-                                //System.out.println("green value = " + g);
-                                double b = c.getBlue();
-                                //System.out.println("blue value = " + b);
-                                double grey = (r + g + b) / 3;
-                                Color nc = new Color(grey, grey, grey, 1.0);
-                                pw.setColor(x, y, nc); // Set the color for each pixel
-                            }
-                        }
-
-                        imageView2.setImage(wImage1);
-                        imageView2.setFitHeight(300);
-                        imageView2.setFitWidth(300);
-                        pictureRoot.getChildren().addAll(imageView2, t);
-                        pictureStage.setScene(new Scene(pictureRoot, 1000, 500));
-                        pictureStage.show();
 
 
-                    } catch (Exception e) {
-                        // Handle potential image loading errors (e.g., file not found, invalid format)
-                        System.err.println("Error loading image: " + e.getMessage());
-                        // Optionally, display an error message to the user.
-                        label.setText("Error loading image"); // Or a more informative message
-                    }
 
 
-                }
 
         }
 
     }
 
-    public Image convertToTriColor(Image inputImage) {
+    public void convertToTriColor(Image inputImage) {
         HBox triRoot = new HBox();
         int width = (int) inputImage.getWidth();
         int height = (int) inputImage.getHeight();
@@ -160,34 +111,32 @@ public class HelloApplication extends Application {
         PixelReader pr = inputImage.getPixelReader();
         PixelWriter pw = wImage.getPixelWriter();
         ColorAdjust ca = new ColorAdjust();
-        ca.setContrast(0.1);
-        ca.setHue(-0.05);
-        ca.setBrightness(0.1);
-        ca.setSaturation(0.2);
+        ca.setContrast(1);
+        ca.setHue(1);
+        ca.setBrightness(80);
+        ca.setSaturation(1000);
 
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 Color c = pr.getColor(x, y);
                 double r = c.getRed();
-                //System.out.println("red value = " + r);
                 double g = c.getGreen();
-                //System.out.println("green value = " + g);
                 double b = c.getBlue();
-                //System.out.println("blue value = " + b);
-                double grey = (r + g + b) / 3;
-                Color white = new Color(0, 0, 0, 1);
-                Color nc = new Color(grey, grey, grey, 1.0);
+                //double grey = (r + g + b) / 3;
+                //Color white = new Color(0, 0, 0, 1);
+                Color nc = new Color(1, g, b, 1.0);
                 pw.setColor(x, y, nc); // Set the color for each pixel
             }
         }
         ImageView triView = new ImageView();
         triView.setImage(wImage);
+        triView.setEffect(ca);
         Stage triStage = new Stage();
         triRoot.getChildren().addAll(triView);
         triStage.setScene(new Scene(triRoot,1000, 500));
         triStage.show();
-        return wImage;
+
 
     }
 
