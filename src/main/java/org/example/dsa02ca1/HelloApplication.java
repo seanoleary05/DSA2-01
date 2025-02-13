@@ -1,14 +1,12 @@
 package org.example.dsa02ca1;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.effect.ColorAdjust;
-import javafx.scene.image.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
