@@ -84,17 +84,13 @@ public class HelloApplication extends Application {
                     imageView.setFitHeight(300);
                     imageView.setFitWidth(300);
                     t.setText("Image Info: " + file.getPath() + "\n");
-                    pictureRoot.getChildren().addAll(imageView,triC, t);
+                    pictureRoot.getChildren().addAll(imageView, triC, t);
                     pictureStage.setScene(new Scene(pictureRoot, 1000, 500));
                     pictureStage.show();
                     break;
 
 
                 }
-
-
-
-
 
 
         }
@@ -108,36 +104,38 @@ public class HelloApplication extends Application {
         WritableImage wImage = new WritableImage(width, height);
         PixelReader pr = inputImage.getPixelReader();
         PixelWriter pw = wImage.getPixelWriter();
-        ColorAdjust ca = new ColorAdjust();
-        ca.setContrast(1);
-        ca.setHue(1);
-        ca.setBrightness(80);
-        ca.setSaturation(1000);
 
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                Color c = pr.getColor(x, y);
-                double r = c.getRed();
-                double g = c.getGreen();
-                double b = c.getBlue();
-                //double grey = (r + g + b) / 3;
-                //Color white = new Color(0, 0, 0, 1);
-                Color nc = new Color(1, g, b, 1.0);
-                pw.setColor(x, y, nc); // Set the color for each pixel
+                Color color = pr.getColor(x, y);
+
+                // Define "slightly red" condition
+                if (isSlightlyRed(color)) {
+                    pw.setColor(x, y, Color.RED); // Fully saturated red
+                } else {
+                    pw.setColor(x, y, Color.WHITE); // Everything else is white
+                }
             }
+
         }
         ImageView triView = new ImageView();
         triView.setImage(wImage);
-        triView.setEffect(ca);
         Stage triStage = new Stage();
         triRoot.getChildren().addAll(triView);
-        triStage.setScene(new Scene(triRoot,1000, 500));
+        triStage.setScene(new Scene(triRoot, 1000, 500));
         triStage.show();
 
 
     }
+    private boolean isSlightlyRed(Color color) {
+        double red = color.getRed();
+        double green = color.getGreen();
+        double blue = color.getBlue();
 
+        // Condition for "slightly red": Red is dominant, but green and blue are present
+        return red > 0.5 && green < 0.5 && blue < 0.5;
+    }
 }
 
 
