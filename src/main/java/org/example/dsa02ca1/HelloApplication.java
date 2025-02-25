@@ -110,9 +110,9 @@ public class HelloApplication extends Application {
             for (int x = 0; x < width; x++) {
                 Color color = pr.getColor(x, y);
 
-                // Define "slightly red" condition
-                if (isSlightlyRed(color)) {
-                    pw.setColor(x, y, Color.RED); // Fully saturated red
+                // If the color isnt red or purple
+                if (!isWhite(color)) {
+                    pw.setColor(x, y, Color.RED);
                 } else {
                     pw.setColor(x, y, Color.WHITE); // Everything else is white
                 }
@@ -128,14 +128,26 @@ public class HelloApplication extends Application {
 
 
     }
-    private boolean isSlightlyRed(Color color) {
+    private boolean isWhite(Color color) {
         double red = color.getRed();
         double green = color.getGreen();
         double blue = color.getBlue();
 
-        // Condition for "slightly red": Red is dominant, but green and blue are present
-        return red > 0.5 && green < 0.5 && blue < 0.5;
+        System.out.println(red);
+        System.out.println(green);
+        System.out.println(blue);
+
+
+        return red > 0.9 && green > 0.1 && blue > 0.1;
     }
+
+   /* private boolean isPurple(Color color){
+
+
+    }
+
+
+    */
 }
 
 
