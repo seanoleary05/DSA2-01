@@ -110,12 +110,22 @@ public class HelloApplication extends Application {
             for (int x = 0; x < width; x++) {
                 Color color = pr.getColor(x, y);
 
+
+
                 // If the color isnt red or purple
-                if (!isWhite(color)) {
+                if (isRed(color)) {
                     pw.setColor(x, y, Color.RED);
-                } else {
-                    pw.setColor(x, y, Color.WHITE); // Everything else is white
                 }
+
+                if (isPurple(color)){
+                    pw.setColor(x,y,Color.PURPLE);
+                }
+                if (isWhite(color)){
+                    pw.setColor(x,y,Color.WHITE);
+                }
+
+
+
             }
 
         }
@@ -133,21 +143,30 @@ public class HelloApplication extends Application {
         double green = color.getGreen();
         double blue = color.getBlue();
 
-        System.out.println(red);
-        System.out.println(green);
-        System.out.println(blue);
 
 
-        return red > 0.9 && green > 0.1 && blue > 0.1;
+        return red >0.9 && green > 0.9 && blue > 0.9;
     }
 
-   /* private boolean isPurple(Color color){
+    private boolean isPurple(Color color){
+        double red = color.getRed();
+
+        double blue = color.getBlue();
+
+        return red > 0.5 && blue > 0.5;
 
 
     }
 
+    private boolean isRed(Color color){
+        double r = color.getRed();
+        double b = color.getBlue();
 
-    */
+        return r > 0.5 && b < 0.5;
+    }
+
+
+
 }
 
 
