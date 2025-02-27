@@ -114,23 +114,15 @@ public class HelloApplication extends Application {
 
                 if (isRed(color)) {
                     pw.setColor(x, y, Color.RED);
+
                 } else if (isPurple(color)) {
                     pw.setColor(x, y, Color.PURPLE);
 
                 }
 
-
-
-
                 else{
                     pw.setColor(x,y,Color.WHITE);
                 }
-
-
-
-
-
-
 
             }
 
