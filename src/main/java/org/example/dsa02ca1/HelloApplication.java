@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class HelloApplication extends Application {
 
@@ -99,6 +100,7 @@ public class HelloApplication extends Application {
 
     public void convertToTriColor(Image inputImage) {
         HBox triRoot = new HBox();
+        Button countButton = new Button("Count All Red & White Cells");
         int width = (int) inputImage.getWidth();
         int height = (int) inputImage.getHeight();
         WritableImage wImage = new WritableImage(width, height);
@@ -134,11 +136,35 @@ public class HelloApplication extends Application {
         ImageView triView = new ImageView();
         triView.setImage(wImage);
         Stage triStage = new Stage();
-        triRoot.getChildren().addAll(triView);
+        triRoot.getChildren().addAll(triView,countButton);
+        countButton.setOnAction(e -> countCells(wImage));
         triStage.setScene(new Scene(triRoot, 1000, 500));
         triStage.show();
 
 
+    }
+
+    public void  countCells(Image writableImage){
+        ArrayList<String> pixels = new ArrayList<>();
+        int width = (int) writableImage.getWidth();
+        int height = (int) writableImage.getHeight();
+        WritableImage wImage = new WritableImage(width, height);
+        PixelReader pr = writableImage.getPixelReader();
+        PixelWriter pw = wImage.getPixelWriter();
+
+
+        for(int y=0;y<height;y++){
+            for(int x =0; x<width; x++){
+                Color pixel = pr.getColor(x,y);
+                pixels.add(pixel.toString());
+                pixels.forEach(System.out::println);
+            }
+        }
+        for(int i = 0; i < pixels.size(); i++ ){
+            if (pixels.get(i).toString() == "0xFFFFFFFF" ){
+                pixels.add(i,"x");
+            }
+        }
     }
     private boolean isWhite(Color color) {
         double green = color.getGreen();
