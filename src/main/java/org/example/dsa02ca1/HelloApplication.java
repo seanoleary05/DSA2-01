@@ -115,13 +115,17 @@ public class HelloApplication extends Application {
                 if (isRed(color)) {
                     pw.setColor(x, y, Color.RED);
 
-                } else if (isPurple(color)) {
-                    pw.setColor(x, y, Color.PURPLE);
+                } else  if (isWhite(color)) {
+                    pw.setColor(x, y, Color.WHITE);
 
                 }
 
-                else{
-                    pw.setColor(x,y,Color.WHITE);
+
+
+
+
+                else  {
+                    pw.setColor(x,y,Color.PURPLE);
                 }
 
             }
@@ -152,7 +156,7 @@ public class HelloApplication extends Application {
         double r = color.getRed();
         double g = color.getGreen();
 
-        return r > 0.5 && g < 0.8 && b > 0.5;
+        return (r > 0.6 && r < 0.99) && (g < 0.91) && (b > 0.7);
 
 
     }
@@ -163,7 +167,7 @@ public class HelloApplication extends Application {
         double g = color.getGreen();
 
 
-        return r > 0.5 && g < 0.8 && b < 0.8;
+        return r > 0.5 && g < 0.8 && b < 0.9;
     }
 
 
