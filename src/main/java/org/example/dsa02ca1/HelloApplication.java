@@ -163,6 +163,7 @@ public class HelloApplication extends Application {
         for(int i = 0; i < pixels.size(); i++ ){
             if (pixels.get(i).toString() == "0xFFFFFFFF" ){
                 pixels.add(i,"x");
+
             }
         }
     }
