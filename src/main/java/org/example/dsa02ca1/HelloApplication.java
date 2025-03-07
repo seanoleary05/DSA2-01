@@ -147,7 +147,7 @@ public class HelloApplication extends Application {
 
 
 
-        return  red > 0.92 && blue > 0.92 && green > 0.92;
+        return  red > 0.8 && blue > 0.8 && green > 0.8;
     }
 
     private boolean isPurple(Color color){
