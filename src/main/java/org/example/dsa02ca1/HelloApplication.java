@@ -135,6 +135,8 @@ public class HelloApplication extends Application {
         }
         ImageView triView = new ImageView();
         triView.setImage(wImage);
+        triView.setFitHeight(300);
+        triView.setFitWidth(300);
         Stage triStage = new Stage();
         triRoot.getChildren().addAll(triView,countButton);
         countButton.setOnAction(e -> countCells(wImage));
