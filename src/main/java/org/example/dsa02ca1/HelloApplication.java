@@ -187,7 +187,6 @@ public class HelloApplication extends Application {
 
         return (r > 0.6 && r < 0.99) && (g < 0.91) && (b > 0.7);
 
-
     }
 
     private boolean isRed(Color color){
