@@ -31,6 +31,7 @@ public class HelloApplication extends Application {
 
 
     public static void main(String[] args) {
+        DisJointSet<?> DSet = new DisJointSet<>();
         launch();
     }
 
@@ -139,36 +140,20 @@ public class HelloApplication extends Application {
         triView.setFitWidth(300);
         Stage triStage = new Stage();
         triRoot.getChildren().addAll(triView,countButton);
-        countButton.setOnAction(e -> countCells(wImage));
+        //countButton.setOnAction(e -> countCells(wImage));
         triStage.setScene(new Scene(triRoot, 1000, 500));
         triStage.show();
 
 
     }
 
-    public void  countCells(Image writableImage){
-        ArrayList<String> pixels = new ArrayList<>();
-        int width = (int) writableImage.getWidth();
-        int height = (int) writableImage.getHeight();
-        WritableImage wImage = new WritableImage(width, height);
-        PixelReader pr = writableImage.getPixelReader();
-        PixelWriter pw = wImage.getPixelWriter();
+    public void populateImageArray(Image writableImage, DisJointSet<?> disjointSet){
+        disjointSet.getPixels();
 
 
-        for(int y=0;y<height;y++){
-            for(int x =0; x<width; x++){
-                Color pixel = pr.getColor(x,y);
-                pixels.add(pixel.toString());
-                pixels.forEach(System.out::println);
-            }
-        }
-        for(int i = 0; i < pixels.size(); i++ ){
-            if (pixels.get(i).toString() == "0xFFFFFFFF" ){
-                pixels.add(i,"x");
-
-            }
-        }
     }
+
+
     private boolean isWhite(Color color) {
         double green = color.getGreen();
         double blue = color.getBlue();
