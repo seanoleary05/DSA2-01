@@ -25,13 +25,14 @@ public class HelloApplication extends Application {
     Scene scene;
     Button button;
     Label label = new Label();
+    DisJointSet<?> DSet = new DisJointSet<>();
     ImageView imageView = new ImageView();
     ImageView imageView2 = new ImageView();
     ImageView imageView3 = new ImageView();
 
 
     public static void main(String[] args) {
-        DisJointSet<?> DSet = new DisJointSet<>();
+
         launch();
     }
 
@@ -147,10 +148,24 @@ public class HelloApplication extends Application {
 
     }
 
-    public void populateImageArray(Image writableImage, DisJointSet<?> disjointSet){
-        disjointSet.getPixels();
+    public void populateImageArray(Image writableImage) {
+        PixelReader pr = writableImage.getPixelReader();
+        int width = (int) writableImage.getWidth();
+        int height = (int) writableImage.getHeight();
+        int i = 0;
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                Color color = pr.getColor(x,y);
+                if (color == Color.WHITE){
 
 
+
+                }
+
+
+
+            }
+        }
     }
 
 
