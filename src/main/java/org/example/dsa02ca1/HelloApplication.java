@@ -22,13 +22,15 @@ import java.util.ArrayList;
 public class HelloApplication extends Application {
 
     private Stage window;
-    Scene scene;
+    //Scene scene;
     Button button;
     Label label = new Label();
-    DisJointSet<?> DSet = new DisJointSet<>();
+    PixelNode<?>[] Dset = new PixelNode[9000];
     ImageView imageView = new ImageView();
     ImageView imageView2 = new ImageView();
     ImageView imageView3 = new ImageView();
+
+
 
 
     public static void main(String[] args) {
@@ -148,7 +150,7 @@ public class HelloApplication extends Application {
 
     }
 
-    public void populateImageArray(Image writableImage) {
+    public void populateImageArray(Image writableImage, PixelNode[] Dset) {
         PixelReader pr = writableImage.getPixelReader();
         int width = (int) writableImage.getWidth();
         int height = (int) writableImage.getHeight();
@@ -157,7 +159,22 @@ public class HelloApplication extends Application {
             for (int x = 0; x < width; x++) {
                 Color color = pr.getColor(x,y);
                 if (color == Color.WHITE){
+                    Dset[i] = Dset[i].parent;
+                    Dset[i].color = Color.WHITE;
+                    i++;
+                }
 
+                else if (color == Color.RED){
+                    if(Dset[i].parent == null) { // to be the root of a disjoint set
+                        Dset[i] = Dset[i].parent;
+                    }
+                        Dset[i].color = Color.RED;
+                        if(x <= width-1) {
+                            Color xColor = pr.getColor(x + 1, y);
+                         //   if (xColor == Color.RED) {
+                        //}
+                        Color yColor = pr.getColor(x,y+1);
+                    }
 
 
                 }
