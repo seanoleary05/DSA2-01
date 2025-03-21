@@ -25,7 +25,7 @@ public class HelloApplication extends Application {
     //Scene scene;
     Button button;
     Label label = new Label();
-    PixelNode<?>[] Dset = new PixelNode[9000];
+    PixelNode<?>[] Dset = new PixelNode[10000];
     ImageView imageView = new ImageView();
     ImageView imageView2 = new ImageView();
     ImageView imageView3 = new ImageView();
@@ -126,10 +126,6 @@ public class HelloApplication extends Application {
 
                 }
 
-
-
-
-
                 else  {
                     pw.setColor(x,y,Color.PURPLE);
                 }
@@ -141,6 +137,9 @@ public class HelloApplication extends Application {
         triView.setImage(wImage);
         triView.setFitHeight(300);
         triView.setFitWidth(300);
+        countButton.setOnAction(e -> {
+            populateImageArray(wImage, Dset);
+        });
         Stage triStage = new Stage();
         triRoot.getChildren().addAll(triView,countButton);
         //countButton.setOnAction(e -> countCells(wImage));
@@ -157,33 +156,51 @@ public class HelloApplication extends Application {
         int i = 0;
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                Color color = pr.getColor(x,y);
-                if (color == Color.WHITE){
+                Color color = pr.getColor(x, y);
+                 if (color == Color.RED) {
+                    Dset[i].color = Color.RED;
+                    if (Dset[i].parent == null) { // to be the root of a disjoint set
+                        Dset[i] = Dset[i].parent;
+                    }
+                    if (x <= width - 1) {
+                        Color xColor = pr.getColor(x + 1, y);
+                        if (xColor == Color.RED ) Dset[i] = Dset[i + 1].parent;
+                    }
+
+                    if (y <= height - 1) {
+                        Color yColor = pr.getColor(x,y+width);
+                        if (yColor == Color.RED) Dset[i] = Dset[i + width].parent;
+                    }
+                    i++;
+                }
+                else if (color == Color.PURPLE) {
+                    Dset[i].color = Color.PURPLE;
+                    if (Dset[i].parent == null) { // to be the root of a disjoint set
+                        Dset[i] = Dset[i].parent;
+                    }
+                    if (x <= width - 1) {
+                        Color xColor = pr.getColor(x+1,y);
+                        if (xColor == Color.PURPLE) Dset[i] = Dset[i + 1].parent;
+                    }
+
+                    if (y <= height - 1) {
+                        Color yColor = pr.getColor(x,y+width);
+                        if (yColor == Color.PURPLE) Dset[i] = Dset[i + width].parent;
+                    }
+                    i++;
+                }
+                else if (color == Color.WHITE) { // pixel is white
                     Dset[i] = Dset[i].parent;
                     Dset[i].color = Color.WHITE;
                     i++;
                 }
-
-                else if (color == Color.RED){
-                    if(Dset[i].parent == null) { // to be the root of a disjoint set
-                        Dset[i] = Dset[i].parent;
-                    }
-                        Dset[i].color = Color.RED;
-                        if(x <= width-1) {
-                            Color xColor = pr.getColor(x + 1, y);
-                         //   if (xColor == Color.RED) {
-                        //}
-                        Color yColor = pr.getColor(x,y+1);
-                    }
-
-
-                }
-
-
-
             }
         }
+        System.out.println("finished");
+        System.out.println(Dset.length);
     }
+
+
 
 
     private boolean isWhite(Color color) {
