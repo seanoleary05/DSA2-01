@@ -25,12 +25,10 @@ public class HelloApplication extends Application {
     //Scene scene;
     Button button;
     Label label = new Label();
-    PixelNode<?>[] Dset = new PixelNode[10000];
+    PixelNode<?>[] Dset = new PixelNode[100000];
     ImageView imageView = new ImageView();
     ImageView imageView2 = new ImageView();
     ImageView imageView3 = new ImageView();
-
-
 
 
     public static void main(String[] args) {
@@ -117,17 +115,14 @@ public class HelloApplication extends Application {
                 Color color = pr.getColor(x, y);
 
 
-
                 if (isRed(color)) {
                     pw.setColor(x, y, Color.RED);
 
-                } else  if (isWhite(color)) {
+                } else if (isWhite(color)) {
                     pw.setColor(x, y, Color.WHITE);
 
-                }
-
-                else  {
-                    pw.setColor(x,y,Color.PURPLE);
+                } else {
+                    pw.setColor(x, y, Color.PURPLE);
                 }
 
             }
@@ -141,7 +136,7 @@ public class HelloApplication extends Application {
             populateImageArray(wImage, Dset);
         });
         Stage triStage = new Stage();
-        triRoot.getChildren().addAll(triView,countButton);
+        triRoot.getChildren().addAll(triView, countButton);
         //countButton.setOnAction(e -> countCells(wImage));
         triStage.setScene(new Scene(triRoot, 1000, 500));
         triStage.show();
@@ -149,56 +144,59 @@ public class HelloApplication extends Application {
 
     }
 
-    public void populateImageArray(Image writableImage, PixelNode[] Dset) {
+    public PixelNode[] populateImageArray(Image writableImage,PixelNode[] Dset) {
+        int i = 0;
         PixelReader pr = writableImage.getPixelReader();
         int width = (int) writableImage.getWidth();
         int height = (int) writableImage.getHeight();
-        int i = 0;
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 Color color = pr.getColor(x, y);
-                 if (color == Color.RED) {
-                    Dset[i].color = Color.RED;
+                if (color == Color.RED) {
+                    Dset[i] = new PixelNode(i,Color.RED);
                     if (Dset[i].parent == null) { // to be the root of a disjoint set
                         Dset[i] = Dset[i].parent;
                     }
                     if (x <= width - 1) {
                         Color xColor = pr.getColor(x + 1, y);
-                        if (xColor == Color.RED ) Dset[i] = Dset[i + 1].parent;
+                        if (xColor == Color.RED) Dset[i] = Dset[i + 1].parent;
                     }
 
                     if (y <= height - 1) {
-                        Color yColor = pr.getColor(x,y+width);
+                        Color yColor = pr.getColor(x, y + width);
                         if (yColor == Color.RED) Dset[i] = Dset[i + width].parent;
                     }
                     i++;
-                }
-                else if (color == Color.PURPLE) {
-                    Dset[i].color = Color.PURPLE;
+                } else if (color == Color.PURPLE) {
+                    Dset[i] = new PixelNode(i,Color.PURPLE);
                     if (Dset[i].parent == null) { // to be the root of a disjoint set
                         Dset[i] = Dset[i].parent;
                     }
                     if (x <= width - 1) {
-                        Color xColor = pr.getColor(x+1,y);
+                        Color xColor = pr.getColor(x + 1, y);
                         if (xColor == Color.PURPLE) Dset[i] = Dset[i + 1].parent;
                     }
 
                     if (y <= height - 1) {
-                        Color yColor = pr.getColor(x,y+width);
+                        Color yColor = pr.getColor(x, y + width);
                         if (yColor == Color.PURPLE) Dset[i] = Dset[i + width].parent;
                     }
                     i++;
-                }
-                else if (color == Color.WHITE) { // pixel is white
+                } else if (color == Color.WHITE) {// pixel is white
+                    Dset[i] = new PixelNode(i,Color.WHITE);
                     Dset[i] = Dset[i].parent;
-                    Dset[i].color = Color.WHITE;
                     i++;
                 }
             }
         }
         System.out.println("finished");
-        System.out.println(Dset.length);
+        for (int q = 0; q< Dset.length;q++) {
+            System.out.println(Dset[q].color);
+        }
+        return Dset;
     }
+
+
 
 
 
