@@ -6,14 +6,14 @@ public class PixelNode<T> {
     public T data;
     public PixelNode<?> parent = null;
     public Color color;
-    public int size = 1,height = 1;
 
 
 
-    public PixelNode(T data, Color color) {
+
+    public PixelNode(T data, Color color, PixelNode<T> parent) {
         this.data = data;
         this.color = color;
-        this.parent = this;
+        setParent(parent);
     }
 
     public Color getColor() {
@@ -30,5 +30,14 @@ public class PixelNode<T> {
 
     public void setParent(PixelNode<T> parent) {
         this.parent = parent;
+    }
+
+    @Override
+    public String toString() {
+        return "PixelNode{" +
+                "parent=" + parent +
+                ", color=" + color +
+                ", data=" + data +
+                '}';
     }
 }

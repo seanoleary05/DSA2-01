@@ -54,23 +54,13 @@ public class DisJointSet<T> {
        if(node.parent==null) return node;
        else return find(node.parent);
     }
+    //Quick union of disjoint sets containing elements p and q (Version 2)
+    public static void union(PixelNode<?> p, PixelNode<?> q) {
+        find(q).parent=find(p); //The root of q is made reference the root of p
+    }
 
-    public static void unionByHeight(PixelNode<?> p, PixelNode<?> q) {
-        PixelNode<?> rootp=find(p);
-        PixelNode<?> rootq=find(q);
-        PixelNode<?> deeperRoot=rootp.height>=rootq.height ? rootp : rootq;
-        PixelNode<?> shallowerRoot=deeperRoot==rootp ? rootq : rootp;
-        shallowerRoot.parent=deeperRoot;
-        if(deeperRoot.height==shallowerRoot.height) deeperRoot.height++;
-    }
-    public static void unionBySize(PixelNode<?> p, PixelNode<?> q) {
-        PixelNode<?> rootp=find(p);
-        PixelNode<?> rootq=find(q);
-        PixelNode<?> biggerRoot=rootp.size>=rootq.size ? rootp : rootq;
-        PixelNode<?> smallerRoot=biggerRoot==rootp ? rootq : rootp;
-        smallerRoot.parent=biggerRoot;
-        biggerRoot.size+=smallerRoot.size;
-    }
+
+
 
 
 

@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.*;
 import javafx.scene.layout.HBox;
@@ -17,21 +16,21 @@ import javafx.stage.Stage;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class HelloApplication extends Application {
 
     private Stage window;
     //Scene scene;
+
     Button button;
     Label label = new Label();
-    PixelNode<?>[] Dset = new PixelNode[100000];
     ImageView imageView = new ImageView();
     ImageView imageView2 = new ImageView();
     ImageView imageView3 = new ImageView();
 
 
     public static void main(String[] args) {
+
 
         launch();
     }
@@ -40,6 +39,7 @@ public class HelloApplication extends Application {
     public void start(Stage primaryStage) throws IOException {
         window = primaryStage;
         ChoiceBox<String> choiceBox = new ChoiceBox<>();
+
 
         button = new Button("Run Function");
         choiceBox.getItems().add("Open An Image");
@@ -103,6 +103,7 @@ public class HelloApplication extends Application {
     public void convertToTriColor(Image inputImage) {
         HBox triRoot = new HBox();
         Button countButton = new Button("Count All Red & White Cells");
+        Button testArrayButton = new Button("Button for debugging");
         int width = (int) inputImage.getWidth();
         int height = (int) inputImage.getHeight();
         WritableImage wImage = new WritableImage(width, height);
@@ -133,10 +134,10 @@ public class HelloApplication extends Application {
         triView.setFitHeight(300);
         triView.setFitWidth(300);
         countButton.setOnAction(e -> {
-            populateImageArray(wImage, Dset);
+            populateImageArray(wImage);
         });
         Stage triStage = new Stage();
-        triRoot.getChildren().addAll(triView, countButton);
+        triRoot.getChildren().addAll(triView, countButton,testArrayButton);
         //countButton.setOnAction(e -> countCells(wImage));
         triStage.setScene(new Scene(triRoot, 1000, 500));
         triStage.show();
@@ -144,17 +145,23 @@ public class HelloApplication extends Application {
 
     }
 
-    public PixelNode[] populateImageArray(Image writableImage,PixelNode[] Dset) {
-        int i = 0;
-        PixelReader pr = writableImage.getPixelReader();
+    public PixelNode[] populateImageArray(Image writableImage) {
         int width = (int) writableImage.getWidth();
         int height = (int) writableImage.getHeight();
+        PixelNode[] Dset = new PixelNode[width * height];
+        PixelReader pr = writableImage.getPixelReader();
+
+        System.out.println(width + ", " + height);
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
+                int i = (x + y * width);
+
                 Color color = pr.getColor(x, y);
-                if (color == Color.RED) {
-                    Dset[i] = new PixelNode(i,Color.RED);
-                    if (Dset[i].parent == null) { // to be the root of a disjoint set
+                Dset[i] = new PixelNode("" + i, color, Dset[i]);
+            }
+        }
+        return Dset;
+                    /*if (Dset[i].parent == null) { // to be the root of a disjoint set
                         Dset[i] = Dset[i].parent;
                     }
                     if (x <= width - 1) {
@@ -166,10 +173,13 @@ public class HelloApplication extends Application {
                         Color yColor = pr.getColor(x, y + width);
                         if (yColor == Color.RED) Dset[i] = Dset[i + width].parent;
                     }
-                    i++;
-                } else if (color == Color.PURPLE) {
-                    Dset[i] = new PixelNode(i,Color.PURPLE);
-                    if (Dset[i].parent == null) { // to be the root of a disjoint set
+
+
+                }
+                else if (color.toString() == "0xffffffff") {
+                    Dset[i] = new PixelNode(i,Color.WHITE, Dset[i]);
+
+                  /*  if (Dset[i].parent == null) { // to be the root of a disjoint set
                         Dset[i] = Dset[i].parent;
                     }
                     if (x <= width - 1) {
@@ -181,20 +191,24 @@ public class HelloApplication extends Application {
                         Color yColor = pr.getColor(x, y + width);
                         if (yColor == Color.PURPLE) Dset[i] = Dset[i + width].parent;
                     }
-                    i++;
-                } else if (color == Color.WHITE) {// pixel is white
-                    Dset[i] = new PixelNode(i,Color.WHITE);
-                    Dset[i] = Dset[i].parent;
-                    i++;
+
+
+
+                } else {// pixel is purple
+                    Dset[i] = new PixelNode(i,Color.PURPLE, Dset[i]);
+                //    Dset[i] = Dset[i].parent;
+
+
                 }
-            }
-        }
-        System.out.println("finished");
-        for (int q = 0; q< Dset.length;q++) {
-            System.out.println(Dset[q].color);
-        }
-        return Dset;
+
+                     */
+
+
+
+
     }
+
+
 
 
 
@@ -217,7 +231,7 @@ public class HelloApplication extends Application {
         double r = color.getRed();
         double g = color.getGreen();
 
-        return (r > 0.6 && r < 0.99) && (g < 0.91) && (b > 0.7);
+        return (r > 0.5) && (b > 0.5) && (g <0.9);
 
     }
 
