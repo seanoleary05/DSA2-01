@@ -27,6 +27,7 @@ public class HelloApplication extends Application {
     ImageView imageView = new ImageView();
     ImageView imageView2 = new ImageView();
     ImageView imageView3 = new ImageView();
+    private PixelNode[] Dset;
 
 
     public static void main(String[] args) {
@@ -145,10 +146,10 @@ public class HelloApplication extends Application {
 
     }
 
-    public PixelNode[] populateImageArray(Image writableImage) {
+    public void populateImageArray(Image writableImage) {
         int width = (int) writableImage.getWidth();
         int height = (int) writableImage.getHeight();
-        PixelNode[] Dset = new PixelNode[width * height];
+        Dset = new PixelNode[width * height];
         PixelReader pr = writableImage.getPixelReader();
 
         System.out.println(width + ", " + height);
@@ -160,7 +161,6 @@ public class HelloApplication extends Application {
                 Dset[i] = new PixelNode("" + i, color, Dset[i]);
             }
         }
-        return Dset;
                     /*if (Dset[i].parent == null) { // to be the root of a disjoint set
                         Dset[i] = Dset[i].parent;
                     }
