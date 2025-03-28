@@ -136,10 +136,11 @@ public class HelloApplication extends Application {
         triView.setFitWidth(300);
         countButton.setOnAction(e -> {
             populateImageArray(wImage);
+            UnionFind(wImage);
+
         });
         Stage triStage = new Stage();
         triRoot.getChildren().addAll(triView, countButton,testArrayButton);
-        //countButton.setOnAction(e -> countCells(wImage));
         triStage.setScene(new Scene(triRoot, 1000, 500));
         triStage.show();
 
@@ -151,8 +152,6 @@ public class HelloApplication extends Application {
         int height = (int) writableImage.getHeight();
         Dset = new PixelNode[width * height];
         PixelReader pr = writableImage.getPixelReader();
-
-        System.out.println(width + ", " + height);
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 int i = (x + y * width);
@@ -207,6 +206,29 @@ public class HelloApplication extends Application {
 
 
     }
+
+
+    public void UnionFind(Image wImage) {
+        int width = (int) wImage.getWidth();
+        int height = (int) wImage.getHeight();
+        for (int i = 0; i < Dset.length; i++) {
+            if (isWhite(Dset[i].color)) {
+                Dset[i].parent = Dset[i];
+            } else if (isRed(Dset[i].color)) {
+                if (isRed(Dset[i + 1].color)) { // if pixel to the right is red
+                    Dset[i + 1].parent = Dset[i]; // pass the root value to the parent field of the pixel on the right
+                }
+                if (isRed(Dset[i + width].color)) { // if the pixel to the south is red
+                    Dset[i + width].parent = Dset[i];
+                }
+            }
+        }
+    }
+
+
+
+
+
 
 
 
