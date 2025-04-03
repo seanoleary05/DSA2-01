@@ -136,7 +136,7 @@ public class HelloApplication extends Application {
         triView.setFitWidth(300);
         countButton.setOnAction(e -> {
             populateImageArray(wImage);
-            UnionFind(wImage);
+            processImage(wImage);
 
         });
         Stage triStage = new Stage();
@@ -160,74 +160,38 @@ public class HelloApplication extends Application {
                 Dset[i] = new PixelNode("" + i, color, Dset[i]);
             }
         }
-                    /*if (Dset[i].parent == null) { // to be the root of a disjoint set
-                        Dset[i] = Dset[i].parent;
-                    }
-                    if (x <= width - 1) {
-                        Color xColor = pr.getColor(x + 1, y);
-                        if (xColor == Color.RED) Dset[i] = Dset[i + 1].parent;
-                    }
-
-                    if (y <= height - 1) {
-                        Color yColor = pr.getColor(x, y + width);
-                        if (yColor == Color.RED) Dset[i] = Dset[i + width].parent;
-                    }
-
-
-                }
-                else if (color.toString() == "0xffffffff") {
-                    Dset[i] = new PixelNode(i,Color.WHITE, Dset[i]);
-
-                  /*  if (Dset[i].parent == null) { // to be the root of a disjoint set
-                        Dset[i] = Dset[i].parent;
-                    }
-                    if (x <= width - 1) {
-                        Color xColor = pr.getColor(x + 1, y);
-                        if (xColor == Color.PURPLE) Dset[i] = Dset[i + 1].parent;
-                    }
-
-                    if (y <= height - 1) {
-                        Color yColor = pr.getColor(x, y + width);
-                        if (yColor == Color.PURPLE) Dset[i] = Dset[i + width].parent;
-                    }
-
-
-
-                } else {// pixel is purple
-                    Dset[i] = new PixelNode(i,Color.PURPLE, Dset[i]);
-                //    Dset[i] = Dset[i].parent;
-
-
-                }
-
-                     */
-
-
-
 
     }
 
 
-    public void UnionFind(Image wImage) {
+    public void processImage(Image wImage) {
         int width = (int) wImage.getWidth();
         int height = (int) wImage.getHeight();
-        System.out.println(Dset.length);
-        for (int i = 0; i < Dset.length; i++) {
-            if (isWhite(Dset[i].color)) {
-                Dset[i].parent = Dset[i];
-            } else if (isRed(Dset[i].color)) {
-                if (i<Dset.length-1) {
-                     if(isRed(Dset[i + 1].color)) // if pixel to the right is red
-                    Dset[i + 1].parent = Dset[i]; // pass the root value to the parent field of the pixel on the right
+        int size = width * height;
+        DisjointSet disjointSet = new DisjointSet(size);
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int index = y * width + x;
+
+
+                if (isWhite(Dset[index].color)) continue; // Skip white pixels
+
+                // Compare with the right neighbor
+                if (x + 1 < width && isSameCategory(Dset[index].color, Dset[index + 1].color)) {
+                    disjointSet.union(index, index+1);
                 }
-                if ( (i < Dset.length- width)) {
-                    if (isRed(Dset[i + width].color)){// if the pixel to the south is red
-                    Dset[i + width].parent = Dset[i];
-                }
+
+                // Compare with the bottom neighbor
+                if (y + 1 < height && isSameCategory(Dset[index].color, Dset[index + width].color)) {
+                    disjointSet.union(index, index + width);
                 }
             }
         }
     }
+    private boolean isSameCategory(Color color1, Color color2) {
+        return (isRed(color1) && isRed(color2)) || (isPurple(color1) && isPurple(color2));
+    }
+
 
 
 

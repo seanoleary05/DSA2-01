@@ -10,58 +10,36 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DisJointSet<T> {
+class DisjointSet<T> {
+    private int[] parent;
 
-    private int width;
-    private int height;// set wImage to 300 X 300 pixels
-    public PixelNode[] pixels;
-
-
-    public DisJointSet() {
-        width = getWidth();
-        height = getHeight();
-        int size = width * height;
-        pixels  = new PixelNode[size];
-
-    }
-
-    public int getHeight() {
-        return 300;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public int getWidth() {
-        return 300;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-
-    public PixelNode<T>[] getPixels() {
-        return pixels;
-    }
-
-    public void setPixels(PixelNode<T>[] pixels) {
-        this.pixels = pixels;
-    }
-
-    public static PixelNode<?> find(PixelNode<?> node) { //finds the root or representative  element of the set which i belongs to
-       if(node.parent==null) return node;
-       else return find(node.parent);
-    }
-    //Quick union of disjoint sets containing elements p and q (Version 2)
-    public static void union(PixelNode<?> p, PixelNode<?> q) {
-        find(q).parent=find(p); //The root of q is made reference the root of p
+    public DisjointSet(int size) {
+        parent = new int[size];
+        for (int i = 0; i < size; i++) {
+            parent[i] = i; // Each pixel is its own parent initially
+        }
     }
 
 
 
+    public int find(int x) {
+        if (parent[x] != x) {
+            parent[x] = find(parent[x]); // Path compression
+        }
+        return parent[x];
+    }
 
+    public void union(int x, int y) {
+        int rootX = find(x);
+        int rootY = find(y);
 
-
+        if (rootX != rootY) {
+            parent[rootY] = rootX; // Merge the two sets
+        }
+    }
 }
+
+
+
+
+
