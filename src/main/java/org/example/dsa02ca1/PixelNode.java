@@ -4,13 +4,13 @@ import javafx.scene.paint.Color;
 
 public class PixelNode<T> {
     public T data;
-    public PixelNode<?> parent = null;
+    public int parent;
     public Color color;
 
 
 
 
-    public PixelNode(T data, Color color, PixelNode<T> parent) {
+    public PixelNode(T data, Color color, int parent) {
         this.data = data;
         this.color = color;
         setParent(parent);
@@ -24,11 +24,11 @@ public class PixelNode<T> {
         this.color = color;
     }
 
-    public PixelNode<?> getParent() {
+    public int getParent() {
         return parent;
     }
 
-    public void setParent(PixelNode<T> parent) {
+    public void setParent(int parent) {
         this.parent = parent;
     }
 

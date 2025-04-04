@@ -27,7 +27,9 @@ public class HelloApplication extends Application {
     ImageView imageView = new ImageView();
     ImageView imageView2 = new ImageView();
     ImageView imageView3 = new ImageView();
-    private PixelNode[] Dset;
+    private PixelNode[] Dset = new PixelNode[100000];
+    DisjointSet ds = new DisjointSet(100000);  // Example size
+    int[] parentArray = ds.getParent();
 
 
     public static void main(String[] args) {
@@ -101,7 +103,7 @@ public class HelloApplication extends Application {
 
     }
 
-    public void convertToTriColor(Image inputImage) {
+    public void convertToTriColor(Image inputImage ) {
         HBox triRoot = new HBox();
         Button countButton = new Button("Count All Red & White Cells");
         Button testArrayButton = new Button("Button for debugging");
@@ -137,6 +139,7 @@ public class HelloApplication extends Application {
         countButton.setOnAction(e -> {
             populateImageArray(wImage);
             processImage(wImage);
+            //drawBoundingBoxes(wImage,1000,1000);
 
         });
         Stage triStage = new Stage();
@@ -150,21 +153,49 @@ public class HelloApplication extends Application {
     public void populateImageArray(Image writableImage) {
         int width = (int) writableImage.getWidth();
         int height = (int) writableImage.getHeight();
-        Dset = new PixelNode[width * height];
         PixelReader pr = writableImage.getPixelReader();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 int i = (x + y * width);
 
                 Color color = pr.getColor(x, y);
-                Dset[i] = new PixelNode("" + i, color, Dset[i]);
+                Dset[i] = new PixelNode("" + i, color, i);
+
             }
         }
 
     }
 
 
-    public void processImage(Image wImage) {
+   public void processImage(Image wImage) {
+       int width = (int) wImage.getWidth();
+       int height = (int) wImage.getHeight();
+       int size = width * height;
+
+
+       for (int y = 0; y < height; y++) {
+           for (int x = 0; x < width; x++) {
+               int index = y * width + x;
+
+               if (isWhite(Dset[index].color)) continue;
+
+               // Compare with right neighbor
+               if (x + 1 < width && isSameCategory(Dset[index].color, Dset[index + 1].color)) {
+                   ds.union(index, index + 1);
+               }
+
+               // Compare with bottom neighbor
+               if (y + 1 < height && isSameCategory(Dset[index].color, Dset[index + width].color)) {
+                   ds.union(index, index + width);
+               }
+
+           }
+
+       }
+   }
+
+
+ /*   public void processImage(Image wImage) {
         int width = (int) wImage.getWidth();
         int height = (int) wImage.getHeight();
         int size = width * height;
@@ -187,10 +218,80 @@ public class HelloApplication extends Application {
                 }
             }
         }
+        for(int i = 0; i<Dset.length;i++){
+            System.out.println(Dset[i].parent);
+        }
     }
+
+  */
     private boolean isSameCategory(Color color1, Color color2) {
         return (isRed(color1) && isRed(color2)) || (isPurple(color1) && isPurple(color2));
     }
+
+  /*  public WritableImage drawBoundingBoxes(WritableImage image, int width, int height) {
+        PixelWriter pixelWriter = image.getPixelWriter();
+
+        int[] minX = new int[ds.getParent().length];
+        int[] maxX = new int[ds.getParent().length];
+        int[] minY = new int[ds.getParent().length];
+        int[] maxY = new int[ds.getParent().length];
+        boolean[] visited = new boolean[ds.getParent().length];
+
+        // Initialize bounding box values
+        for (int i = 0; i < ds.getParent().length; i++) {
+            minX[i] = Integer.MAX_VALUE;
+            minY[i] = Integer.MAX_VALUE;
+            maxX[i] = 0;
+            maxY[i] = 0;
+        }
+
+        // Process each pixel
+        for (int i = 0; i < ds.getParent().length; i++) {
+            int root = ds.find(i); // Get root representative
+
+            if (!visited[root]) {
+                visited[root] = true;
+            }
+
+            int x = i % width;
+            int y = i / width;
+
+            // Update bounding box for this root
+            minX[root] = Math.min(minX[root], x);
+            maxX[root] = Math.max(maxX[root], x);
+            minY[root] = Math.min(minY[root], y);
+            maxY[root] = Math.max(maxY[root], y);
+        }
+
+        // Draw bounding boxes on WritableImage
+        Color boxColor = Color.BLUE;
+
+        for (int i = 0; i < ds.getParent().length; i++) {
+            if (visited[i]) { // Only draw for valid sets
+                int x1 = minX[i];
+                int y1 = minY[i];
+                int x2 = maxX[i];
+                int y2 = maxY[i];
+
+                // Draw top and bottom borders
+                for (int x = x1; x <= x2; x++) {
+                    pixelWriter.setColor(x, y1, boxColor);
+                    pixelWriter.setColor(x, y2, boxColor);
+                }
+
+                // Draw left and right borders
+                for (int y = y1; y <= y2; y++) {
+                    pixelWriter.setColor(x1, y, boxColor);
+                    pixelWriter.setColor(x2, y, boxColor);
+                }
+            }
+        }
+
+        return image;
+    }
+
+
+   */
 
 
 

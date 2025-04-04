@@ -37,6 +37,16 @@ class DisjointSet<T> {
             parent[rootY] = rootX; // Merge the two sets
         }
     }
+    public void printParents() {
+        System.out.println("Index -> Parent Mapping:");
+        for (int i = 0; i < parent.length; i++) {
+            System.out.println(i + " -> " + parent[i]);
+        }
+    }
+
+    public int[] getParent(){
+        return parent;
+    }
 }
 
 
