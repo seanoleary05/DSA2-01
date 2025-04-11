@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.*;
 import javafx.scene.layout.HBox;
@@ -13,9 +14,11 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.awt.*;
+import javafx.scene.canvas.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class HelloApplication extends Application {
 
@@ -27,9 +30,9 @@ public class HelloApplication extends Application {
     ImageView imageView = new ImageView();
     ImageView imageView2 = new ImageView();
     ImageView imageView3 = new ImageView();
-    private PixelNode[] Dset = new PixelNode[100000];
-    DisjointSet ds = new DisjointSet(100000);  // Example size
-    int[] parentArray = ds.getParent();
+    private PixelNode[] Dset = new PixelNode[1000000];
+    DisjointSet ds = new DisjointSet(1000000);  // Example size
+
 
 
     public static void main(String[] args) {
@@ -161,6 +164,7 @@ public class HelloApplication extends Application {
                 Color color = pr.getColor(x, y);
                 Dset[i] = new PixelNode("" + i, color, i);
 
+
             }
         }
 
@@ -194,7 +198,6 @@ public class HelloApplication extends Application {
        }
    }
 
-
  /*   public void processImage(Image wImage) {
         int width = (int) wImage.getWidth();
         int height = (int) wImage.getHeight();
@@ -227,83 +230,6 @@ public class HelloApplication extends Application {
     private boolean isSameCategory(Color color1, Color color2) {
         return (isRed(color1) && isRed(color2)) || (isPurple(color1) && isPurple(color2));
     }
-
-  /*  public WritableImage drawBoundingBoxes(WritableImage image, int width, int height) {
-        PixelWriter pixelWriter = image.getPixelWriter();
-
-        int[] minX = new int[ds.getParent().length];
-        int[] maxX = new int[ds.getParent().length];
-        int[] minY = new int[ds.getParent().length];
-        int[] maxY = new int[ds.getParent().length];
-        boolean[] visited = new boolean[ds.getParent().length];
-
-        // Initialize bounding box values
-        for (int i = 0; i < ds.getParent().length; i++) {
-            minX[i] = Integer.MAX_VALUE;
-            minY[i] = Integer.MAX_VALUE;
-            maxX[i] = 0;
-            maxY[i] = 0;
-        }
-
-        // Process each pixel
-        for (int i = 0; i < ds.getParent().length; i++) {
-            int root = ds.find(i); // Get root representative
-
-            if (!visited[root]) {
-                visited[root] = true;
-            }
-
-            int x = i % width;
-            int y = i / width;
-
-            // Update bounding box for this root
-            minX[root] = Math.min(minX[root], x);
-            maxX[root] = Math.max(maxX[root], x);
-            minY[root] = Math.min(minY[root], y);
-            maxY[root] = Math.max(maxY[root], y);
-        }
-
-        // Draw bounding boxes on WritableImage
-        Color boxColor = Color.BLUE;
-
-        for (int i = 0; i < ds.getParent().length; i++) {
-            if (visited[i]) { // Only draw for valid sets
-                int x1 = minX[i];
-                int y1 = minY[i];
-                int x2 = maxX[i];
-                int y2 = maxY[i];
-
-                // Draw top and bottom borders
-                for (int x = x1; x <= x2; x++) {
-                    pixelWriter.setColor(x, y1, boxColor);
-                    pixelWriter.setColor(x, y2, boxColor);
-                }
-
-                // Draw left and right borders
-                for (int y = y1; y <= y2; y++) {
-                    pixelWriter.setColor(x1, y, boxColor);
-                    pixelWriter.setColor(x2, y, boxColor);
-                }
-            }
-        }
-
-        return image;
-    }
-
-
-   */
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     private boolean isWhite(Color color) {

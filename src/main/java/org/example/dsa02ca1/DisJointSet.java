@@ -12,10 +12,12 @@ import java.util.Map;
 
 class DisjointSet<T> {
     private int[] parent;
+    public int size;
 
-    public DisjointSet(int size) {
-        parent = new int[size];
-        for (int i = 0; i < size; i++) {
+    public DisjointSet(int input) {
+        parent = new int[input];
+        this.size = input;
+        for (int i = 0; i < input; i++) {
             parent[i] = i; // Each pixel is its own parent initially
         }
     }
