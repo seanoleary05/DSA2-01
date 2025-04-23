@@ -10,11 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class DisjointSet<T> {
+ public class DisJointSet<T> {
     private int[] parent;
     public int size;
 
-    public DisjointSet(int input) {
+    public DisJointSet(int input) {
         parent = new int[input];
         this.size = input;
         for (int i = 0; i < input; i++) {

@@ -31,7 +31,7 @@ public class HelloApplication extends Application {
     ImageView imageView2 = new ImageView();
     ImageView imageView3 = new ImageView();
     private PixelNode[] Dset = new PixelNode[1000000];
-    DisjointSet ds = new DisjointSet(1000000);  // Example size
+    DisJointSet ds = new DisJointSet(1000000);  // Example size
 
 
 
