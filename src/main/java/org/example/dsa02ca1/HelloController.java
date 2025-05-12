@@ -1,8 +1,9 @@
-/*package org.example.dsa02ca1;
+package org.example.dsa02ca1;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
@@ -20,13 +21,16 @@ import java.io.File;
 public class HelloController {
     @FXML
     private Stage window;
-    Scene scene;
+
+    //Scene scene;
+
     Button button;
-    java.awt.Label label = new Label();
-    DisJointSet<?> DSet = new DisJointSet<>();
+    javafx.scene.control.Label label = new Label();
     ImageView imageView = new ImageView();
     ImageView imageView2 = new ImageView();
     ImageView imageView3 = new ImageView();
+    private PixelNode[] Dset = new PixelNode[1000000];
+    DisJointSet ds = new DisJointSet(1000000);  // Example size
 
 
 
@@ -81,21 +85,14 @@ public class HelloController {
                 javafx.scene.paint.Color color = pr.getColor(x, y);
 
 
-
                 if (isRed(color)) {
                     pw.setColor(x, y, javafx.scene.paint.Color.RED);
 
-                } else  if (isWhite(color)) {
+                } else if (isWhite(color)) {
                     pw.setColor(x, y, javafx.scene.paint.Color.WHITE);
 
-                }
-
-
-
-
-
-                else  {
-                    pw.setColor(x,y, javafx.scene.paint.Color.PURPLE);
+                } else {
+                    pw.setColor(x, y, javafx.scene.paint.Color.PURPLE);
                 }
 
             }
@@ -106,7 +103,7 @@ public class HelloController {
         triView.setFitHeight(300);
         triView.setFitWidth(300);
         Stage triStage = new Stage();
-        triRoot.getChildren().addAll(triView,countButton);
+        triRoot.getChildren().addAll(triView, countButton);
         //countButton.setOnAction(e -> countCells(wImage));
         triStage.setScene(new Scene(triRoot, 1000, 500));
         triStage.show();
@@ -121,13 +118,11 @@ public class HelloController {
         int i = 0;
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                javafx.scene.paint.Color color = pr.getColor(x,y);
-                if (color == javafx.scene.paint.Color.WHITE){
-
+                javafx.scene.paint.Color color = pr.getColor(x, y);
+                if (color == javafx.scene.paint.Color.WHITE) {
 
 
                 }
-
 
 
             }
@@ -141,11 +136,10 @@ public class HelloController {
         double red = color.getRed();
 
 
-
-        return  red > 0.8 && blue > 0.8 && green > 0.8;
+        return red > 0.8 && blue > 0.8 && green > 0.8;
     }
 
-    private boolean isPurple(javafx.scene.paint.Color color){
+    private boolean isPurple(javafx.scene.paint.Color color) {
 
         double b = color.getBlue();
         double r = color.getRed();
@@ -155,7 +149,7 @@ public class HelloController {
 
     }
 
-    private boolean isRed(Color color){
+    private boolean isRed(Color color) {
         double r = color.getRed();
         double b = color.getBlue();
         double g = color.getGreen();
@@ -163,9 +157,8 @@ public class HelloController {
 
         return r > 0.5 && g < 0.8 && b < 0.9;
     }
+}
 
 
 
 
-
- */
