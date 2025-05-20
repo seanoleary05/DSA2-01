@@ -236,10 +236,11 @@ public class HelloApplication extends Application {
         double green = color.getGreen();
         double blue = color.getBlue();
         double red = color.getRed();
+        double o = color.getOpacity();
 
 
 
-        return  red > 0.8 && blue > 0.8 && green > 0.8;
+        return  red > 0.7 && blue > 0.7 && green > 0.7;
     }
 
     private boolean isPurple(Color color){
@@ -247,8 +248,9 @@ public class HelloApplication extends Application {
         double b = color.getBlue();
         double r = color.getRed();
         double g = color.getGreen();
+        double o = color.getOpacity();
 
-        return (r > 0.5) && (b > 0.5) && (g <0.9);
+        return (r > 0.4) && (b > 0.4) && (g <0.9);
 
     }
 
@@ -256,9 +258,10 @@ public class HelloApplication extends Application {
         double r = color.getRed();
         double b = color.getBlue();
         double g = color.getGreen();
+        double o = color.getOpacity();
 
 
-        return r > 0.5 && g < 0.8 && b < 0.9;
+        return r > 0.5 && g < 0.6 && b < 0.9 && o > 0.95;
     }
 
 
